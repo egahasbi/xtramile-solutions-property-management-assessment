@@ -1,0 +1,48 @@
+/* Highlight average rating */
+.rating {
+
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0176d3;
+
+}
+
+/* Space between inspection cards */
+.inspection-card {
+
+    border-radius: 0.5rem;
+
+}
+
+/* Completed inspection status */
+.completed {
+
+    background-color: #2e844a;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: bold;
+
+}
+
+/* In-progress inspection status */
+.inProgress {
+
+    background-color: #dd7a01;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: bold;
+
+}
+
+/* Failed inspection status */
+.failed {
+
+    background-color: #ba0517;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: bold;
+
+}

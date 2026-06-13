@@ -1,0 +1,122 @@
+<template>
+
+    <lightning-card title="Property Inspection Dashboard">
+
+        <div class="slds-p-around_medium">
+
+            <!-- Average Rating -->
+            <div class="slds-m-bottom_medium">
+
+                <p class="slds-text-title_bold">
+                    Average Rating
+                </p>
+
+                <p class="rating">
+                    {averageRating}
+                </p>
+
+            </div>
+
+            <!-- Filters -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium">
+
+                <div class="slds-col">
+
+                    <lightning-combobox
+                        label="Status"
+                        value={selectedStatus}
+                        options={statusOptions}
+                        onchange={handleStatusChange}>
+                    </lightning-combobox>
+
+                </div>
+
+                <div class="slds-col">
+
+                    <lightning-combobox
+                        label="Inspection Type"
+                        value={selectedType}
+                        options={typeOptions}
+                        onchange={handleTypeChange}>
+                    </lightning-combobox>
+
+                </div>
+
+            </div>
+
+            <!-- Schedule Button -->
+            <div class="slds-m-bottom_medium">
+
+                <lightning-button
+                    label="Schedule New Inspection"
+                    variant="brand"
+                    onclick={handleScheduleInspection}>
+                </lightning-button>
+
+            </div>
+
+            <!-- Inspection List -->
+            <template if:true={hasInspections}>
+
+                <template
+                    for:each={inspections}
+                    for:item="inspection">
+
+                    <div
+                        key={inspection.Id}
+                        class="inspection-card slds-box slds-m-bottom_small">
+
+                        <div class="slds-grid slds-wrap">
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <strong>Date:</strong>
+                                {inspection.Inspection_Date__c}
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <strong>Type:</strong>
+                                {inspection.Inspection_Type__c}
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <strong>Inspector:</strong>
+                                {inspection.Name}
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <strong>Rating:</strong>
+                                {inspection.Overall_Rating__c}
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+
+                                <span class={inspection.statusClass}>
+                                    {inspection.Inspection_Status__c}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </template>
+
+            <!-- No Data Message -->
+            <template if:false={hasInspections}>
+
+                <div class="slds-text-align_center">
+
+                    No inspections found.
+
+                </div>
+
+            </template>
+
+        </div>
+
+    </lightning-card>
+
+</template>
