@@ -22,6 +22,10 @@ export default class PropertyInspectionDashboard extends LightningElement {
     // Store wire result for refresh
     wiredInspectionResult;
 
+    isLoading = true;
+
+    showFlow = false;
+
     /**
      * Status filter options
      */
@@ -59,6 +63,8 @@ export default class PropertyInspectionDashboard extends LightningElement {
 
         if (result.data) {
 
+            this.isLoading = false;
+
             // Add css class based on inspection status
             this.inspections = result.data.map(inspection => {
 
@@ -73,6 +79,9 @@ export default class PropertyInspectionDashboard extends LightningElement {
                 else if (inspection.Inspection_Status__c === 'Failed') {
                     statusClass = 'failed';
                 }
+                else if (inspection.Inspection_Status__c === 'Scheduled') {
+                    statusClass = 'scheduled';
+                }
 
                 return {
                     ...inspection,
@@ -84,7 +93,9 @@ export default class PropertyInspectionDashboard extends LightningElement {
         }
         else if (result.error) {
 
-            console.error(result.error);
+            this.isLoading = false;
+
+            this.errorMessage = 'Failed to retrieve inspection records.';
 
         }
 
@@ -134,10 +145,7 @@ export default class PropertyInspectionDashboard extends LightningElement {
      */
     handleScheduleInspection() {
 
-        window.open(
-            '/flow/Schedule_Property_Inspection',
-            '_blank'
-        );
+        window.open('/flow/Schedule_Property_Inspection');
 
     }
 
@@ -149,5 +157,46 @@ export default class PropertyInspectionDashboard extends LightningElement {
         return this.inspections.length > 0;
 
     }
+
+    get flowInputVariables() {
+
+        return [
+            {
+                name: 'recordId',
+                type: 'String',
+                value: this.recordId
+            }
+        ];
+
+    }
+
+    handleScheduleInspection() {
+
+        // Open flow modal
+        this.showFlow = true;
+
+    }
+
+    closeModal() {
+
+        this.showFlow = false;
+
+    }
+
+    handleFlowStatusChange(event) {
+
+        if (event.detail.status === 'FINISHED') {
+
+            // Close modal
+            this.showFlow = false;
+
+            // Refresh inspection list
+            refreshApex(this.wiredInspectionResult);
+
+        }
+
+    }
+
+    
 
 }

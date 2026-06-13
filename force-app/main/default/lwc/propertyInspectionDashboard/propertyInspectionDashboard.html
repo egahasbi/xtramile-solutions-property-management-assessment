@@ -1,5 +1,14 @@
 <template>
 
+    <template if:true={isLoading}>
+
+        <lightning-spinner
+            alternative-text="Loading"
+            size="medium">
+        </lightning-spinner>
+
+    </template>
+
     <lightning-card title="Property Inspection Dashboard">
 
         <div class="slds-p-around_medium">
@@ -69,22 +78,22 @@
                         <div class="slds-grid slds-wrap">
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Date:</strong>
+                                <strong>Date: </strong>
                                 {inspection.Inspection_Date__c}
                             </div>
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Type:</strong>
+                                <strong>Type: </strong>
                                 {inspection.Inspection_Type__c}
                             </div>
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Inspector:</strong>
+                                <strong>Inspector: </strong>
                                 {inspection.Name}
                             </div>
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Rating:</strong>
+                                <strong>Rating: </strong>
                                 {inspection.Overall_Rating__c}
                             </div>
 
@@ -118,5 +127,59 @@
         </div>
 
     </lightning-card>
+
+    <template if:true={errorMessage}>
+
+        <div class="slds-text-color_error">
+
+            {errorMessage}
+
+        </div>
+
+    </template>
+
+    <template if:true={showFlow}>
+
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open">
+
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+
+                    <h2 class="slds-text-heading_medium">
+                        Schedule Property Inspection
+                    </h2>
+
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <lightning-flow
+                        flow-api-name="Schedule_Property_Inspection"
+                        flow-input-variables={flowInputVariables}
+                        onstatuschange={handleFlowStatusChange}>
+                    </lightning-flow>
+
+                </div>
+
+                <footer class="slds-modal__footer">
+
+                    <lightning-button
+                        label="Close"
+                        onclick={closeModal}>
+                    </lightning-button>
+
+                </footer>
+
+            </div>
+
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+    </template>
 
 </template>
