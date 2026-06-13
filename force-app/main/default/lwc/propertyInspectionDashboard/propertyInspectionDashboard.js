@@ -12,7 +12,7 @@ export default class PropertyInspectionDashboard extends LightningElement {
     // Store inspection records
     inspections = [];
 
-    // Store average rating
+    // Store average rating value
     averageRating = 0;
 
     // Store selected filters
@@ -22,12 +22,17 @@ export default class PropertyInspectionDashboard extends LightningElement {
     // Store wire result for refresh
     wiredInspectionResult;
 
+    // Store error message
+    errorMessage;
+
+    // Control loading spinner visibility
     isLoading = true;
 
+    // Control flow modal visibility
     showFlow = false;
 
     /**
-     * Status filter options
+     * Status filter options.
      */
     statusOptions = [
         { label: 'All', value: '' },
@@ -38,7 +43,7 @@ export default class PropertyInspectionDashboard extends LightningElement {
     ];
 
     /**
-     * Inspection type filter options
+     * Inspection type filter options.
      */
     typeOptions = [
         { label: 'All', value: '' },
@@ -49,7 +54,7 @@ export default class PropertyInspectionDashboard extends LightningElement {
     ];
 
     /**
-     * Retrieve inspection records
+     * Retrieves inspection records based on selected filters.
      */
     @wire(getInspections, {
         accountId: '$recordId',
@@ -58,34 +63,42 @@ export default class PropertyInspectionDashboard extends LightningElement {
     })
     wiredInspections(result) {
 
-        // Save wire result for refresh
+        // Save wire result for future refresh
         this.wiredInspectionResult = result;
 
         if (result.data) {
 
             this.isLoading = false;
+            this.errorMessage = undefined;
 
-            // Add css class based on inspection status
+            // Add status css class and rating stars
             this.inspections = result.data.map(inspection => {
 
-                let statusClass = '';
+                let statusClass = 'scheduled';
 
                 if (inspection.Inspection_Status__c === 'Completed') {
+
                     statusClass = 'completed';
+
                 }
                 else if (inspection.Inspection_Status__c === 'In Progress') {
+
                     statusClass = 'inProgress';
+
                 }
                 else if (inspection.Inspection_Status__c === 'Failed') {
+
                     statusClass = 'failed';
-                }
-                else if (inspection.Inspection_Status__c === 'Scheduled') {
-                    statusClass = 'scheduled';
+
                 }
 
                 return {
                     ...inspection,
-                    statusClass
+                    statusClass,
+                    ratingStars:
+                        inspection.Overall_Rating__c
+                            ? '⭐'.repeat(inspection.Overall_Rating__c)
+                            : 'N/A'
                 };
 
             });
@@ -94,7 +107,6 @@ export default class PropertyInspectionDashboard extends LightningElement {
         else if (result.error) {
 
             this.isLoading = false;
-
             this.errorMessage = 'Failed to retrieve inspection records.';
 
         }
@@ -102,7 +114,7 @@ export default class PropertyInspectionDashboard extends LightningElement {
     }
 
     /**
-     * Retrieve average rating
+     * Retrieves average inspection rating.
      */
     @wire(getAverageRating, {
         accountId: '$recordId'
@@ -123,34 +135,42 @@ export default class PropertyInspectionDashboard extends LightningElement {
     }
 
     /**
-     * Handle status filter change
+     * Returns formatted average rating.
      */
-    handleStatusChange(event) {
+    get averageRatingDisplay() {
 
-        this.selectedStatus = event.detail.value;
+        return this.averageRating
+            ? this.averageRating.toFixed(1)
+            : 'N/A';
 
     }
 
     /**
-     * Handle inspection type filter change
+     * Returns star icons for average rating.
      */
-    handleTypeChange(event) {
+    get averageStars() {
 
-        this.selectedType = event.detail.value;
+        const stars = [];
+        const roundedRating = Math.round(this.averageRating);
+
+        for (let i = 1; i <= 5; i++) {
+
+            stars.push({
+                index: i,
+                className:
+                    i <= roundedRating
+                        ? 'star-filled'
+                        : 'star-empty'
+            });
+
+        }
+
+        return stars;
 
     }
 
     /**
-     * Navigate user to Flow tab
-     */
-    handleScheduleInspection() {
-
-        window.open('/flow/Schedule_Property_Inspection');
-
-    }
-
-    /**
-     * Determine whether records exist
+     * Determines whether inspections exist.
      */
     get hasInspections() {
 
@@ -158,6 +178,9 @@ export default class PropertyInspectionDashboard extends LightningElement {
 
     }
 
+    /**
+     * Returns input variables for Flow.
+     */
     get flowInputVariables() {
 
         return [
@@ -170,19 +193,45 @@ export default class PropertyInspectionDashboard extends LightningElement {
 
     }
 
+    /**
+     * Handles status filter changes.
+     */
+    handleStatusChange(event) {
+
+        this.selectedStatus = event.detail.value;
+
+    }
+
+    /**
+     * Handles inspection type filter changes.
+     */
+    handleTypeChange(event) {
+
+        this.selectedType = event.detail.value;
+
+    }
+
+    /**
+     * Opens flow modal.
+     */
     handleScheduleInspection() {
 
-        // Open flow modal
         this.showFlow = true;
 
     }
 
+    /**
+     * Closes flow modal.
+     */
     closeModal() {
 
         this.showFlow = false;
 
     }
 
+    /**
+     * Handles flow completion and refreshes inspection list.
+     */
     handleFlowStatusChange(event) {
 
         if (event.detail.status === 'FINISHED') {
@@ -190,13 +239,11 @@ export default class PropertyInspectionDashboard extends LightningElement {
             // Close modal
             this.showFlow = false;
 
-            // Refresh inspection list
+            // Refresh inspection records
             refreshApex(this.wiredInspectionResult);
 
         }
 
     }
-
-    
 
 }

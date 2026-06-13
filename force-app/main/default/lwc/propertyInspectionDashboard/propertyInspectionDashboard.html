@@ -1,5 +1,6 @@
 <template>
 
+    <!-- Display loading spinner while data is being retrieved -->
     <template if:true={isLoading}>
 
         <lightning-spinner
@@ -13,20 +14,53 @@
 
         <div class="slds-p-around_medium">
 
-            <!-- Average Rating -->
+            <!-- Display error message when data retrieval fails -->
+            <template if:true={errorMessage}>
+
+                <div class="slds-text-color_error slds-m-bottom_medium">
+
+                    {errorMessage}
+
+                </div>
+
+            </template>
+
+            <!-- Display average inspection rating -->
             <div class="slds-m-bottom_medium">
 
                 <p class="slds-text-title_bold">
+
                     Average Rating
+
                 </p>
 
-                <p class="rating">
-                    {averageRating}
-                </p>
+                <div class="rating-container">
+
+                    <div class="rating-value">
+                        {averageRatingDisplay}
+                    </div>
+
+                    <div class="stars">
+
+                        <template
+                            for:each={averageStars}
+                            for:item="star">
+
+                            <span
+                                key={star.index}
+                                class={star.className}>
+                                ★
+                            </span>
+
+                        </template>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            <!-- Filters -->
+            <!-- Filter section -->
             <div class="slds-grid slds-gutters slds-m-bottom_medium">
 
                 <div class="slds-col">
@@ -53,7 +87,7 @@
 
             </div>
 
-            <!-- Schedule Button -->
+            <!-- Action buttons -->
             <div class="slds-m-bottom_medium">
 
                 <lightning-button
@@ -64,7 +98,7 @@
 
             </div>
 
-            <!-- Inspection List -->
+            <!-- Display inspection records -->
             <template if:true={hasInspections}>
 
                 <template
@@ -78,29 +112,43 @@
                         <div class="slds-grid slds-wrap">
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Date: </strong>
+
+                                <strong>Date:</strong>
+                                &nbsp;
                                 {inspection.Inspection_Date__c}
+
                             </div>
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Type: </strong>
+
+                                <strong>Type:</strong>
+                                &nbsp;
                                 {inspection.Inspection_Type__c}
+
                             </div>
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Inspector: </strong>
+
+                                <strong>Inspector:</strong>
+                                &nbsp;
                                 {inspection.Name}
+
                             </div>
 
                             <div class="slds-col slds-size_1-of-2">
-                                <strong>Rating: </strong>
-                                {inspection.Overall_Rating__c}
+
+                                <strong>Rating:</strong>
+                                &nbsp;
+                                {inspection.ratingStars}
+
                             </div>
 
                             <div class="slds-col slds-size_1-of-1 slds-m-top_small">
 
                                 <span class={inspection.statusClass}>
+
                                     {inspection.Inspection_Status__c}
+
                                 </span>
 
                             </div>
@@ -113,7 +161,7 @@
 
             </template>
 
-            <!-- No Data Message -->
+            <!-- Display message when no inspections exist -->
             <template if:false={hasInspections}>
 
                 <div class="slds-text-align_center">
@@ -128,16 +176,7 @@
 
     </lightning-card>
 
-    <template if:true={errorMessage}>
-
-        <div class="slds-text-color_error">
-
-            {errorMessage}
-
-        </div>
-
-    </template>
-
+    <!-- Display flow modal when scheduling a new inspection -->
     <template if:true={showFlow}>
 
         <section
@@ -147,15 +186,19 @@
 
             <div class="slds-modal__container">
 
+                <!-- Modal header -->
                 <header class="slds-modal__header">
 
                     <h2 class="slds-text-heading_medium">
+
                         Schedule Property Inspection
+
                     </h2>
 
                 </header>
 
-                <div class="slds-modal__content slds-p-around_medium">
+                <!-- Flow container -->
+                <div class="slds-modal__content slds-p-around_medium" >
 
                     <lightning-flow
                         flow-api-name="Schedule_Property_Inspection"
@@ -165,6 +208,7 @@
 
                 </div>
 
+                <!-- Modal footer -->
                 <footer class="slds-modal__footer">
 
                     <lightning-button
@@ -178,6 +222,7 @@
 
         </section>
 
+        <!-- Display modal backdrop -->
         <div class="slds-backdrop slds-backdrop_open"></div>
 
     </template>

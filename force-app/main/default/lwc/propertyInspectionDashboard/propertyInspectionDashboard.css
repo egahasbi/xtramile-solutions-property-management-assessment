@@ -1,59 +1,117 @@
-/* Highlight average rating */
-.rating {
+/*
+ * Center-align average rating section.
+ */
+.rating-container {
 
-    font-size: 2rem;
-    font-weight: bold;
-    color: #0176d3;
+    text-align: center;
 
 }
 
-/* Space between inspection cards */
+/*
+ * Highlight average rating value.
+ */
+.rating-value {
+
+    font-size: 3rem;
+    font-weight: bold;
+    color: #181818;
+
+}
+
+/*
+ * Reduce spacing between rating value and stars.
+ */
+.stars {
+
+    margin-top: -0.75rem;
+
+}
+
+/*
+ * Style filled stars.
+ */
+.star-filled {
+
+    font-size: 2rem;
+    color: #f4b400;
+
+}
+
+/*
+ * Style empty stars.
+ */
+.star-empty {
+
+    font-size: 2rem;
+    color: #e5e5e5;
+
+}
+
+/*
+ * Add rounded corners to inspection cards.
+ */
 .inspection-card {
 
     border-radius: 0.5rem;
 
 }
 
-/* Completed inspection status */
+/*
+ * Common styling for all status badges.
+ */
+.completed,
+.inProgress,
+.failed,
+.scheduled {
+
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: bold;
+
+}
+
+/*
+ * Completed inspection status.
+ */
 .completed {
 
     background-color: #2e844a;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-weight: bold;
 
 }
 
-/* In-progress inspection status */
+/*
+ * In-progress inspection status.
+ */
 .inProgress {
 
     background-color: #dd7a01;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-weight: bold;
 
 }
 
-/* Failed inspection status */
+/*
+ * Failed inspection status.
+ */
 .failed {
 
     background-color: #ba0517;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-weight: bold;
 
 }
 
-/* Scheduled inspection status */
+/*
+ * Scheduled inspection status.
+ */
 .scheduled {
 
     background-color: #0176d3;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-weight: bold;
+
+}
+
+/*
+ * Remove spinner overlay background.
+ */
+:host .slds-spinner_container {
+
+    background: none;
 
 }
