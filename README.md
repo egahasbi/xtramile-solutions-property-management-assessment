@@ -212,6 +212,12 @@ Coverage summary:
 
 Overall coverage exceeds the required minimum of 90%.
 
+## Code Coverage Screenshot
+
+![Apex Test Coverage]
+(screenshots/apex-coverage1.png)
+(screenshots/apex-coverage2.png)
+
 ---
 
 Thank you for reviewing this submission.
