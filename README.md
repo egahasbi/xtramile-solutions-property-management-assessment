@@ -204,7 +204,7 @@ The following screenshots are available in the **/screenshots** folder:
 
 ### Email Notification
 
-![Email Notification](screenshots/email-notification-result.png)
+![Email Notification](screenshots/flow-email-notification-result.png)
 
 ## Lightning Web Component
 
