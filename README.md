@@ -220,7 +220,8 @@ The following screenshots are available in the **/screenshots** folder:
 
 ![Flow Modal](screenshots/dashboard-modal.png)
 
-For additional screenshots, including flow process details, custom validation messages, object configuration, page layouts, and test results, please refer to the /screenshots folder.
+> [!NOTE]
+> **Additional screenshots and detailed configurations are available in the `/screenshots` folder, including flow process details, custom validation messages, object configuration, page layouts, and test execution results.**
 
 ---
 
