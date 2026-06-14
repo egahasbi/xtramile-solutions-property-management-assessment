@@ -214,9 +214,8 @@ Overall coverage exceeds the required minimum of 90%.
 
 ## Code Coverage Screenshot
 
-![Apex Test Coverage]
-(screenshots/apex-coverage1.png)
-(screenshots/apex-coverage2.png)
+![Apex Test Coverage PropertyInspectionHandler](screenshots/apex-coverage1.png)
+![Apex Test Coverage PropertyInspectionController](screenshots/apex-coverage2.png)
 
 ---
 
