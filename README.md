@@ -8,23 +8,33 @@ This project implements a Property Inspection Management solution in Salesforce.
 
 # Setup Instructions
 
-1. Clone the repository.
+## Prerequisites
 
-2. Authorize a Salesforce org.
+* Salesforce CLI
+* Visual Studio Code with Salesforce Extension Pack
+* Access to a Salesforce Developer Org
+
+## Deploy Metadata
+
+Authorize the target org:
 
 ```bash
 sf org login web
 ```
 
-3. Deploy metadata.
+Deploy the project:
 
 ```bash
 sf project deploy start
 ```
 
-4. Assign permissions if required.
+Run Apex tests:
 
-5. Open the Account record page to access the Property Inspection Dashboard component.
+```bash
+sf apex run test --result-format human
+```
+
+Open an Account record page to access the Property Inspection Dashboard component.
 
 ---
 
@@ -32,7 +42,9 @@ sf project deploy start
 
 ## Custom Object Configuration
 
-Created a custom object named `Property_Inspection__c` to store inspection records.
+Created a custom object:
+
+* Property_Inspection__c
 
 Main fields include:
 
@@ -42,27 +54,42 @@ Main fields include:
 * Overall Rating
 * Related Property
 
-A formula field named `Days Since Inspection` calculates the number of days since the inspection date.
+### Formula Field
 
-A validation rule ensures that completed inspections must have an Overall Rating.
+Created a formula field:
+
+**Days Since Inspection**
+
+The formula returns:
+
+* Number of days since the inspection date.
+* Zero when the inspection date is in the future.
+
+### Validation Rule
+
+Created a validation rule to ensure:
+
+* Overall Rating is required when Inspection Status is Completed.
+
+### List View
+
+Created an overdue inspections list view to quickly identify inspections that require attention.
 
 ---
 
 ## Apex Implementation
 
-Created:
-
 ### PropertyInspectionHandler
 
 Responsible for:
 
-* Calculating average inspection ratings
-* Retrieving overdue inspections
-* Updating Account descriptions with the latest inspection summary
+* Calculating average inspection ratings.
+* Retrieving overdue inspections.
+* Updating the Account description with the latest inspection summary.
 
 ### PropertyInspectionController
 
-Exposes methods used by the Lightning Web Component.
+Provides methods used by the Lightning Web Component.
 
 ### Test Classes
 
@@ -71,17 +98,24 @@ Created:
 * PropertyInspectionHandlerTest
 * PropertyInspectionControllerTest
 
-Achieved 100% code coverage for all custom Apex classes.
+Coverage results:
+
+| Class                        | Coverage |
+| ---------------------------- | -------: |
+| PropertyInspectionHandler    |      93% |
+| PropertyInspectionController |     100% |
+
+Overall code coverage exceeds the required minimum of 90%.
 
 ---
 
 ## Flow Automation
 
-Created a Screen Flow named:
+Created a Screen Flow:
 
-`Schedule_Property_Inspection`
+### Schedule_Property_Inspection
 
-The flow performs:
+The flow performs the following steps:
 
 1. Collect inspection information.
 2. Check for duplicate inspections.
@@ -90,7 +124,7 @@ The flow performs:
 5. Send an email notification.
 6. Display a confirmation screen.
 
-The flow is launched from the LWC dashboard inside a modal window.
+The flow is launched from the Lightning Web Component inside a modal dialog.
 
 ---
 
@@ -98,67 +132,86 @@ The flow is launched from the LWC dashboard inside a modal window.
 
 Created:
 
-`propertyInspectionDashboard`
+### propertyInspectionDashboard
 
-Features:
+Features include:
 
-* Display average rating
-* Star rating visualization
-* Filter by status
-* Filter by inspection type
-* Color-coded inspection status
-* Loading indicator
-* Error handling
-* No records message
-* Launch Flow inside a modal
-* Automatically refresh data after Flow completion
+* Display average rating.
+* Star rating visualization.
+* Filter by inspection status.
+* Filter by inspection type.
+* Color-coded inspection statuses.
+* Loading indicator.
+* Error handling.
+* No records message.
+* Flow launch inside a modal window.
+* Automatic refresh after flow completion.
 
 ---
 
 # Assumptions Made
 
 * Account records represent properties.
-* The Account Name is used as the property name.
-* Only one primary contact is used for email notification.
-* Future inspection dates return 0 for the Days Since Inspection formula field.
+* Account Name is used as the property name.
+* Email notifications are sent to the first available contact.
 * Overall Rating values range from 1 to 5.
+* Future inspection dates return zero in the Days Since Inspection formula field.
 
 ---
 
 # Known Limitations
 
 * Email notifications are sent only to the first available contact.
-* The dashboard currently supports filtering by status and inspection type only.
-* Advanced reporting and analytics are outside the scope of this assessment.
+* Dashboard filters currently support status and inspection type only.
+* Advanced analytics and reporting are outside the scope of this assessment.
+* Duplicate checks are based on the implemented flow criteria.
 
 ---
 
-# Screenshots
+# Screenshots of UI and Flow
 
-Screenshots are available in the `/screenshots` folder.
+The following screenshots are available in the **/screenshots** folder:
 
-Included screenshots:
+### Configuration
 
 * Custom Object
+* Custom Fields
 * Formula Field
 * Validation Rule
 * List View
+
+### Flow
+
 * Flow Canvas
-* Email Notification
+* Duplicate Inspection Check
+* Email Notification Action
+
+### Lightning Web Component
+
 * Dashboard
 * Filters
-* Color Coding
-* Modal Flow
+* Status Color Coding
+* Flow Modal
+* Working Functionality
 
 ---
 
 # Test Execution Results
 
-| Class                        | Coverage |
-| ---------------------------- | -------- |
-| PropertyInspectionHandler    | 100%     |
-| PropertyInspectionController | 100%     |
+The following Apex test classes were executed successfully:
 
-Overall custom Apex coverage exceeds the required 90%.
+* PropertyInspectionHandlerTest
+* PropertyInspectionControllerTest
+
+Coverage summary:
+
+| Apex Class                   | Coverage |
+| ---------------------------- | -------: |
+| PropertyInspectionHandler    |      93% |
+| PropertyInspectionController |     100% |
+
+Overall coverage exceeds the required minimum of 90%.
+
+---
 
 Thank you for reviewing this submission.
