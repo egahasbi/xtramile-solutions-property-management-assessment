@@ -36,7 +36,14 @@
             <name>emailBody</name>
             <value>
                 <inputConfiguratorMode>Custom</inputConfiguratorMode>
-                <stringValue>&lt;p&gt;Hello {!Get_Primary_Account_Contact_Role.Contact.Name},&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This is to confirm that a property inspection has been scheduled.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inspection Details&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inspection Date: {!inspectionDate}&lt;/p&gt;&lt;p&gt;Inspection Type: {!inspectionType}&lt;/p&gt;&lt;p&gt;Inspector Name: {!inspectorName}&lt;/p&gt;&lt;p&gt;Status: Scheduled&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Thank you.&lt;/p&gt;</stringValue>
+                <stringValue>&lt;p&gt;Hello {!Get_Contact.Name},&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This is to confirm that a property inspection has been scheduled.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inspection Details&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Inspection Date: {!inspectionDate}&lt;/p&gt;&lt;p&gt;Inspection Type: {!inspectionType}&lt;/p&gt;&lt;p&gt;Inspector Name: {!inspectorName}&lt;/p&gt;&lt;p&gt;Status: Scheduled&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Thank you.&lt;/p&gt;</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
@@ -141,7 +148,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Send_Inspection_Notification_Email</targetReference>
+                <targetReference>Get_Contact</targetReference>
             </connector>
             <label>Exist</label>
         </rules>
@@ -242,6 +249,27 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Property_Inspection__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Contact</name>
+        <label>Get Contact</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Inspection_Notification_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Primary_Account_Contact_Role.ContactId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
